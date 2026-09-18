@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.devsenior.servicelayer.model.Producto;
 
 @Repository 
-public class ProductoRepository {
+public class ProductoRepository implements  IProductoRepository{
     private List<Producto> productos = new ArrayList<>();
     private Long contador = 1L;
 
