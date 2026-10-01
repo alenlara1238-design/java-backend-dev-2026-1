@@ -336,3 +336,96 @@ Repository  No guardar
    ▼
 Guardar
 ```
+
+# Parte 3: Nueva regla del sistema
+
+Después de controlar que una sala no pueda ser reservada por dos estudiantes para la misma hora, la universidad identifica una nueva situación.
+
+Un estudiante podría registrar varias reservas y ocupar diferentes espacios de estudio al mismo tiempo.
+
+Por ejemplo, el estudiante `Laura` podría registrar:
+
+```json
+{
+  "id": 1,
+  "estudiante": "Laura",
+  "sala": "Sala A",
+  "hora": "10:00"
+}
+```
+
+y posteriormente:
+
+```json
+{
+  "id": 2,
+  "estudiante": "Laura",
+  "sala": "Sala B",
+  "hora": "11:00"
+}
+```
+
+Para evitar que una misma persona acumule demasiadas reservas, la universidad establece la siguiente regla:
+
+> **Un estudiante puede tener como máximo 2 reservas.**
+
+Por lo tanto:
+
+- Si el estudiante tiene 0 reservas, puede crear una nueva.
+- Si tiene 1 reserva, puede crear una nueva.
+- Si ya tiene 2 reservas, no puede crear otra.
+
+### Ejemplo
+
+Si Laura ya tiene:
+
+```text
+Reserva 1 → Sala A → 10:00
+Reserva 2 → Sala C → 14:00
+```
+
+y solicita una tercera reserva:
+
+```text
+Sala B → 16:00
+```
+
+la aplicación deberá impedir la operación.
+
+En cambio, si Carlos solamente tiene una reserva, podrá registrar una segunda.
+
+### Implementación
+
+La regla debe incorporarse al proceso de creación de una reserva.
+
+El Service deberá consultar cuántas reservas tiene actualmente el estudiante y decidir si puede realizarse la nueva operación.
+
+El Repository deberá proporcionar la información necesaria para realizar esta consulta.
+
+El Controller continuará recibiendo la petición y delegando la operación al Service.
+
+El flujo será:
+
+```text
+POST /reservas
+       ↓
+   Controller
+       ↓
+     Service
+       ↓
+¿Cuántas reservas tiene el estudiante?
+       ↓
+   ┌───┴───┐
+   │       │
+ < 2      >= 2
+   │       │
+   ▼       ▼
+Guardar   No guardar
+```
+
+La nueva regla debe funcionar junto con la regla anterior de disponibilidad de la sala.
+
+Por lo tanto, al crear una reserva deberán cumplirse ambas condiciones:
+
+1. La sala debe estar disponible para esa hora.
+2. El estudiante debe tener menos de 2 reservas.
