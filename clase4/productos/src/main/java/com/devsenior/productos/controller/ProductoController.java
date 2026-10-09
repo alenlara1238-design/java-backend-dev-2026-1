@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.devsenior.productos.model.Producto;
 import com.devsenior.productos.service.ProductoService;
 
+import jakarta.validation.Valid;
+
 @RestController 
 @RequestMapping("/api/productos")
 public class ProductoController {
@@ -33,7 +35,7 @@ public class ProductoController {
     }
 
     @PostMapping
-    public Producto crearProducto(@RequestBody Producto producto){
+    public Producto crearProducto(@Valid @RequestBody Producto producto){
         return service.crearProducto(producto);
     }
 

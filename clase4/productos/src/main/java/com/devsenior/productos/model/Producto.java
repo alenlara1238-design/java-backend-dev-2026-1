@@ -1,6 +1,17 @@
 package com.devsenior.productos.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
 public class Producto {
+
+    private Long id;
+
+    @NotBlank(message = "El nombre es obligatorio")
+    private String nombre;
+
+    @Positive(message = "El precio debe ser positivo")
+    private double precio;
 
     public Producto(){}
 
@@ -12,11 +23,6 @@ public class Producto {
         this.precio = precio;
     }
 
-
-
-    private Long id;
-    private String nombre;
-    private double precio;
     public Long getId() {
         return id;
     }
