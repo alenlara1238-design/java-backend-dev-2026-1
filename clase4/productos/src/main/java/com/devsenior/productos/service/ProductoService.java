@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.devsenior.productos.exception.ProductoNoEncontradoException;
 import com.devsenior.productos.model.Producto;
 import com.devsenior.productos.repository.ProductoRepository;
 
@@ -21,6 +22,11 @@ public class ProductoService {
 
     public Producto buscarProducto(Long id){
         Producto producto = repository.findById(id);
+
+        if(producto == null){
+            throw new ProductoNoEncontradoException("Producto con id: " + id + " no encontrado");
+        }
+
         return producto;
     }
 
